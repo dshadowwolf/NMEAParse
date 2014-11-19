@@ -5,12 +5,9 @@ use strict;
 use warnings FATAL => 'all';
 use Test::More;
 
-plan tests => 1;
+plan tests => 2;
 
 BEGIN {
-      use_ok('NMEAParse') || print "Bail out!\n";
+      use_ok('NMEAParse');
+      require_ok('NMEAParse');
 }
-
-my $nmeaparser = NMEAParse->new();
-
-diag( "Testing NMEAParse $NMEAParse::VERSION, Perl $], $^X" );
