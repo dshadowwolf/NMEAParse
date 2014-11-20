@@ -1,0 +1,2 @@
+[Documentation::PodSpelling]
+stop_words = NMEAParse NMEA namespace GLL GSV RMC VTG GGA ZDA checksum sigil de UTC GPS Readonly GitHub TODO Hazelton
