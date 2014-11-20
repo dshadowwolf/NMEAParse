@@ -13,6 +13,8 @@ expected to inject the data with sensible names (perhaps derived from the NMEA
 Full documentation of the user-visible interface is available as POD in the
 module source. Documentation of the nature of the plugins follows.
 
+This module can be built using the Dist::Zilla system.
+
 _Plugin_ _Architecture_
 
 Each plugin is expected to be in the NMEAParse namespace (eg:
@@ -25,23 +27,25 @@ sentence data.
 A hypothetical 'EXP' message would be in a file named 'EXP.pm' in a directory
 in @INC named 'NMEAParse' and could easily be implemented as:
 
-  #!perl
+    ```perl
+    #!perl
+    
+    use strict;
+    use warnings;
+    
+    package NMEAParse::EXP;
+    
+    sub process {
+      my ( $unused, $instance, @data ) = @_;
+      my $d = $instance->{DATA};
+      
+      ( $d->{var1}, $d->{var2}, ) = @data;
+      
+      return;
+    }
 
-  use strict;
-  use warnings;
-
-  package NMEAParse::EXP;
-
-  sub process {
-    my ( $unused, $instance, @data ) = @_;
-    my $d = $instance->{DATA};
-
-    ( $d->{var1}, $d->{var2}, ) = @data;
-
-    return;
-  }
-
-  1;
-
+    1;
+    ```
+	
 The preceding is, in fact, the basic skeleton of the existing plugins, save for
 some differences in the naming of the variables.
