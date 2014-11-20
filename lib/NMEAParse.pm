@@ -163,6 +163,7 @@ Using the parser is as easy as creating the object and handing it data to parse:
 C<use NMEAParse;>
 
 C<my $parser = NMEAParse->new( qw/GGA GLL GSA GSV RMC VTG ZDA/ );>
+
 C<$parser-E<gt>parse( '$GPGGA,201548.000,3912.4397,N,08427.5741,W,2,7,1.18,182.9,M,-33.3,M,0000,0000*6A');>
 
 Getting the data out is as simple - it's stored as a hash, so...
