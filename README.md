@@ -27,25 +27,25 @@ sentence data.
 A hypothetical 'EXP' message would be in a file named 'EXP.pm' in a directory
 in @INC named 'NMEAParse' and could easily be implemented as:
 
-    ```perl
-    #!perl
+```perl
+#!perl
     
-    use strict;
-    use warnings;
+use strict;
+use warnings;
     
-    package NMEAParse::EXP;
+package NMEAParse::EXP;
     
-    sub process {
-      my ( $unused, $instance, @data ) = @_;
-      my $d = $instance->{DATA};
+sub process {
+  my ( $unused, $instance, @data ) = @_;
+  my $d = $instance->{DATA};
       
-      ( $d->{var1}, $d->{var2}, ) = @data;
+  ( $d->{var1}, $d->{var2}, ) = @data;
       
-      return;
-    }
+  return;
+}
 
-    1;
-    ```
+1;
+```
 	
 The preceding is, in fact, the basic skeleton of the existing plugins, save for
 some differences in the naming of the variables.
