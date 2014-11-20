@@ -12,6 +12,7 @@ use Carp qw/carp croak/;
 use Module::Loader;
 use Class::Method::Modifiers qw/fresh/;
 use Readonly;
+
 =head1 NAME
 
 NMEAParse - Parse NMEA 0183 compliant sentences
@@ -90,8 +91,9 @@ sub new {
 =item NMEAParse::checksum( $sentence_to_checksum )
 
 This function is used internally to validate the checksum of an input NMEA
-sentence. To use it, pass in the NMEA sentence without the leading sigil and
-it will return the value you can then properly append to the NMEA sentence.
+sentence. To use it, pass in the NMEA sentence without the leading sigil or
+trailing checksum and it will return the value you can then check against the
+device-supplied checksum or append to your own sentence.
 
 =back
 
@@ -173,7 +175,17 @@ sub get_position {
     my $self = shift;
     my $d    = $self->{DATA};
 
-    return ( $d->{lat_NS}, $d->{latitude}, $d->{lon_EW}, $d->{longitude} );
+    my $lns = q{};
+    my $lat = q{};
+    my $lew = q{};
+    my $lon = q{};
+
+    if ( defined $d->{lat_NS} )    { $lns = $d->{lat_NS}; }
+    if ( defined $d->{latitude} )  { $lat = $d->{latitude}; }
+    if ( defined $d->{lon_EW} )    { $lew = $d->{lon_EW}; }
+    if ( defined $d->{longitude} ) { $lon = $d->{longitude}; }
+
+    return ( $lns, $lat, $lew, $lon );
 }
 
 =over
@@ -191,7 +203,8 @@ sub get_time {
     my $self = shift;
     my $d    = $self->{DATA};
 
-    return $d->{time_utc};
+    if   ( defined $d->{time_utc} ) { return $d->{time_utc}; }
+    else                            { return q{}; }
 }
 
 =over
@@ -210,7 +223,8 @@ sub get_heading {
     my $self = shift;
     my $d    = $self->{DATA};
 
-    return $d->{course_true};
+    if   ( defined $d->{course_true} ) { return $d->{course_true}; }
+    else                               { return q{}; }
 }
 
 =over
@@ -229,7 +243,8 @@ sub get_speed {
     my $self = shift;
     my $d    = $self->{DATA};
 
-    return $d->{speed_in_kph};
+    if   ( defined $d->{speed_in_kph} ) { return $d->{speed_in_kph}; }
+    else                                { return q{}; }
 }
 
 =head1 BUGS
