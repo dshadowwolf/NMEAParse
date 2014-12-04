@@ -56,9 +56,9 @@ sub parse {
         ;    # chomp will kill the newline, but not the carriage return
     if ( !( $data =~ /^\$.*$/xmis ) ) { return; }
     my $break_sentence = $data;
-    $break_sentence =~ s/\$(.*)[*]\p{ASCII_Hex_Digit}{2}/$1/xms;
+    $break_sentence =~ s/\$(.*)[*][[:xdigit:]]{2}/$1/xms;
     my $expected_checksum = $data;
-    $expected_checksum =~ s/\$.*[*](\p{ASCII_Hex_Digit}{2})/$1/xms;
+    $expected_checksum =~ s/\$.*[*]([[:xdigit:]]{2})/$1/xms;
 
     if ( checksum($break_sentence) ne $expected_checksum ) {
         croak "Invalid checksum - $expected_checksum != "
