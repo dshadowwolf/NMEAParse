@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 package NMEAParse::GSV;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 use Readonly;
 use Carp qw/carp croak/;
 

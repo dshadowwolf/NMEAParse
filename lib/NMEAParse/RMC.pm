@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 package NMEAParse::RMC;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 sub process {
     my ( $xx, $self, @data ) = @_;

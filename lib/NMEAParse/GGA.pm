@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 package NMEAParse::GGA;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 sub process {
     my ( $x, $self, @data ) = @_;

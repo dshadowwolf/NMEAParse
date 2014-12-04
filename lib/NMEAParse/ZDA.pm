@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 package NMEAParse::ZDA;
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 use Readonly;
 
 sub process {

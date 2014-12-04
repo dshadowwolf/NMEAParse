@@ -5,7 +5,7 @@ use warnings;
 
 package NMEAParse;
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 use List::Util qw/reduce first/;
 use Carp qw/carp croak/;
@@ -83,6 +83,22 @@ sub parse {
     }
 
     $self->$just_type( @fields[ 1 .. $#fields ] );
+    if( $self->{DATA}->{lat_ddmm} ) {
+	if( $self->{DATA}->{latitude} &&
+	    $self->{DATA}->{latitude} != $self->{DATA}->{lat_ddmm} ) {
+		$self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
+	    } else {
+		$self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
+	    }
+    }
+    if( $self->{DATA}->{lon_ddmm} ) {
+	if( $self->{DATA}->{longitude} &&
+	    $self->{DATA}->{longitude} != $self->{DATA}->{lon_ddmm} ) {
+		$self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
+	    } else {
+		$self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
+	    }
+    } 
     return;
 }
 
