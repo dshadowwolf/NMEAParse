@@ -5,7 +5,7 @@ use warnings;
 
 package NMEAParse;
 
-our $VERSION = '0.0.2';
+our $VERSION = '0.0.3';
 
 use List::Util qw/reduce first/;
 use Carp qw/carp croak/;
@@ -52,16 +52,13 @@ sub parse {
 
     if ( !$data ) { croak 'no data!'; }
     chomp $data;
-    $data =~ s/\r//xms;  # chomp will kill the newline, but not the carriage return
+    $data =~ s/\r//xms
+        ;    # chomp will kill the newline, but not the carriage return
     if ( !( $data =~ /^\$.*$/xmis ) ) { return; }
-    my $break_sentence = do {
-        my @yyy = split //xms, $data;
-        join q//, @yyy[ 1 .. $#yyy - $CSUM_STARTS ];
-    };
-    my $expected_checksum = do {
-        my @yyy = split //xms, $data;
-        join q//, @yyy[ $CSUM_VALUE_STARTS .. $END_OF_ARRAY ];
-    };
+    my $break_sentence = $data;
+    $break_sentence =~ s/\$(.*)[*]\p{ASCII_Hex_Digit}{2}/$1/xms;
+    my $expected_checksum = $data;
+    $expected_checksum =~ s/\$.*[*](\p{ASCII_Hex_Digit}{2})/$1/xms;
 
     if ( checksum($break_sentence) ne $expected_checksum ) {
         croak "Invalid checksum - $expected_checksum != "
@@ -83,22 +80,26 @@ sub parse {
     }
 
     $self->$just_type( @fields[ 1 .. $#fields ] );
-    if( $self->{DATA}->{lat_ddmm} ) {
-	if( $self->{DATA}->{latitude} &&
-	    $self->{DATA}->{latitude} != $self->{DATA}->{lat_ddmm} ) {
-		$self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
-	    } else {
-		$self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
-	    }
+    if ( $self->{DATA}->{lat_ddmm} ) {
+        if (   $self->{DATA}->{latitude}
+            && $self->{DATA}->{latitude} != $self->{DATA}->{lat_ddmm} )
+        {
+            $self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
+        }
+        else {
+            $self->{DATA}->{latitude} = $self->{DATA}->{lat_ddmm};
+        }
     }
-    if( $self->{DATA}->{lon_ddmm} ) {
-	if( $self->{DATA}->{longitude} &&
-	    $self->{DATA}->{longitude} != $self->{DATA}->{lon_ddmm} ) {
-		$self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
-	    } else {
-		$self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
-	    }
-    } 
+    if ( $self->{DATA}->{lon_ddmm} ) {
+        if (   $self->{DATA}->{longitude}
+            && $self->{DATA}->{longitude} != $self->{DATA}->{lon_ddmm} )
+        {
+            $self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
+        }
+        else {
+            $self->{DATA}->{longitude} = $self->{DATA}->{lon_ddmm};
+        }
+    }
     return;
 }
 
