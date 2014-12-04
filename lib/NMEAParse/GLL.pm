@@ -15,6 +15,9 @@ sub process {
         $d->{lon_EW},       $d->{time_utc}, $d->{data_valid}
     ) = @data;
 
+    require Data::Dumper;
+    print Data::Dumper->Dumper( @data ) . "\n";
+    
     return;
 }
 
