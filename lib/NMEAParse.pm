@@ -52,6 +52,7 @@ sub parse {
 
     if ( !$data ) { croak 'no data!'; }
     chomp $data;
+    $data =~ s/\r//xms;  # chomp will kill the newline, but not the carriage return
     if ( !( $data =~ /^\$.*$/xmis ) ) { return; }
     my $break_sentence = do {
         my @yyy = split //xms, $data;
